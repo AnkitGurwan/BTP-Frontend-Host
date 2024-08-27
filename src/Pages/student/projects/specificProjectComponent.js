@@ -17,7 +17,7 @@ import StudentContext from "../../../context/student/StudentContext";
 const SpecificProjectComponent = () => {
 
     // get context
-    const { details, getInterestedStudents, allProjects, getOwnerDetails} = useContext(ProjectContext);
+    const { details, getInterestedStudents, allProjectsStudent, getOwnerDetails} = useContext(ProjectContext);
     const { checkStudentEligible } = useContext(StudentContext);
     const { getUserDetailsFromMicrosoft, StudentMicrosoftLogin } = useContext(AuthContext);
 
@@ -26,8 +26,8 @@ const SpecificProjectComponent = () => {
     const items = useSelector(state => state.allProjects.allProjects);
 
     //define states
-    const [allowed,setAllowed] = useState(items.length > 0 ? true : false);
-    const [loading,setLoading] = useState(items.length > 0 ? true : false);
+    const [allowed,setAllowed] = useState(false);
+    const [loading,setLoading] = useState(true);
     const [random, setRandom] = useState(false);
     
     const params=useParams();
@@ -38,14 +38,30 @@ const SpecificProjectComponent = () => {
 
     useEffect(() => {
       if(items.length === 0)getItem();
+
+      getDetailsFunc();
   }, [random]);
+
+    const getDetailsFunc = async () => {
+
+      //get all interested student in the project
+      const y = await getInterestedStudents(id);
+
+      await getOwnerDetails(id);
+
+      if(y === 200)
+      {
+        setLoading(false); 
+        setAllowed(true);
+      }   
+    }
 
     const getItem = async () => {
 
       await getUserDetailsFromMicrosoft();
 
       //get all projects
-      const x = await allProjects();
+      const x = await allProjectsStudent();
       if(x === 408)
       {
         await StudentMicrosoftLogin();
@@ -61,13 +77,6 @@ const SpecificProjectComponent = () => {
           setAllowed(true);
       }
 
-      //get all interested student in the project
-      const y = await getInterestedStudents(id);
-
-      await getOwnerDetails(id);
-
-      if(y === 200)setLoading(false);    
-
       setRandom(true);
     }
 
@@ -75,7 +84,14 @@ const SpecificProjectComponent = () => {
     
     return(
       <div className=''>
-        {allowed?
+        {loading 
+        ?
+        <div className="flex items-center justify-center h-screen">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-900"></div>
+        </div>
+        :
+        allowed
+        ?
         <div>
           <header className="bg-gray-800 border-y border-gray-500 border-opacity-30 text-white py-2 flex items-center justify-center">
             <Link 
@@ -140,4 +156,3 @@ const SpecificProjectComponent = () => {
     )
 }
 export default SpecificProjectComponent;
-

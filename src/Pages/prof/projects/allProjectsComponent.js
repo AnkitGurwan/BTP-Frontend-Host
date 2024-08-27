@@ -14,7 +14,7 @@ const OwnerProjectsComponent = () => {
   //get items from redux
   const items = useSelector((state) => state.allProjects.allProjects);
 
-  const { allProjects} = useContext( ProjectContext );
+  const { allProjectsProf} = useContext( ProjectContext );
   const { getProfDetailsFromMicrosoft } = useContext(ProfContext);
   const { ProfMicrosoftLogin } = useContext(AuthContext);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -26,7 +26,7 @@ const OwnerProjectsComponent = () => {
 
     await getProfDetailsFromMicrosoft();
 
-    const x = await allProjects();
+    const x = await allProjectsProf();
 
     if(x === 408)
     {

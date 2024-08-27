@@ -7,7 +7,7 @@ import ProfDetails from '../../student/projects/profDetails'
 import { useSelector } from 'react-redux';
 
 const SpecificProjectCard = () => {
-  const { allProjects, details, getOwnerDetails } = useContext(ProjectContext);
+  const { allProjectsProf, details, getOwnerDetails } = useContext(ProjectContext);
   const items = useSelector(state => state.allProjects.allProjects);
 
   const params=useParams();
@@ -17,7 +17,7 @@ const SpecificProjectCard = () => {
   Store.push(details);
 
   const getItem = async () => {
-    await allProjects();
+    await allProjectsProf();
 
     await getOwnerDetails(id);
   }

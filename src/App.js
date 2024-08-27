@@ -22,6 +22,8 @@ import AllReadMore from './Pages/prof/projects/allReadMorePage.js';
 import StudentFeedback from './Pages/student/others/feedback.js'
 import ProfFeedback from './Pages/prof/others/feedback.js'
 import ProjectUpdate from "./Pages/prof/projects/updateProject.js"
+import FinalStudentUpload from "./Pages/student/others/final.js"
+import DownloadAll from "./Pages/download.js"
 
 const App = () => {
   return (
@@ -56,6 +58,9 @@ const App = () => {
                 <Route path='/btp/prof/owner/update/:id' element={<ProjectUpdate />} />
 
 
+                <Route path='/btp/prof/download/mesa/head' element={<DownloadAll />} />
+
+
                 {/* student login page */}
                 <Route path='/btp/student' element={<Studentlogin />} />
 
@@ -73,6 +78,9 @@ const App = () => {
 
                 {/* student feedback page */}
                 <Route path='/btp/student/feedback' element={<StudentFeedback />} />
+
+
+                <Route path='/btp/student/document/upload' element={<FinalStudentUpload />} />
               </Routes>
             </BrowserRouter>
           </ProfState>

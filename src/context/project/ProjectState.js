@@ -15,20 +15,45 @@ const ItemState=(props)=>{
     const dispatch = useDispatch();
 
     //local backend url for testing
-    const url = process.env.REACT_APP_BACKEND_URL;
+    const url = 'http://localhost:5001';
 
     //hosted backend url
     // const url = process.env.REACT_APP_BACKEND_URL;
 
     
-    const allProjects = async () => {
-        const response = await fetch(`${url}/project/allprojects`, {
+    const allProjectsStudent = async () => {
+        const response = await fetch(`${url}/student/studentallprojects`, {
             method: 'GET',
             credentials:'include',
             headers: {
                 'Content-Type': "application/json"
             }
         });
+        console.log("r",response)
+        const json = await response.json();
+
+        //reverse the array to get the latest project at top
+        if(json.length > 0)
+        {
+            json.reverse();
+        }
+
+        //save details in react state and redux
+        setAllProjectsState(json);
+        dispatch(setAllProjectsRedux(json));
+
+        return response.status;
+    };
+
+    const allProjectsProf = async () => {
+        const response = await fetch(`${url}/project/profallprojects`, {
+            method: 'GET',
+            credentials:'include',
+            headers: {
+                'Content-Type': "application/json"
+            }
+        });
+        console.log("r",response)
         const json = await response.json();
 
         //reverse the array to get the latest project at top
@@ -61,14 +86,14 @@ const ItemState=(props)=>{
         return response.status;
     };
 
-    const createProject = async (email, title, brief_abstract, co_supervisor, specialization) => {
+    const createProject = async (email, title, brief_abstract, co_supervisor, specialization, gradeCardRequired, resumeRequired) => {
             const response = await fetch(`${url}/project/newProject/${email}`, {
                 method: 'POST',
                 credentials:'include',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ title, brief_abstract, co_supervisor, specialization})
+                body: JSON.stringify({ title, brief_abstract, co_supervisor, specialization, gradeCardRequired, resumeRequired})
             });
             
             return response.status;
@@ -184,7 +209,7 @@ const ItemState=(props)=>{
     
         
     return (
-        <ItemContext.Provider value={{details, allProjects,allProjectsState,createProject,updateProject,deleteProject,selectproject,deselectproject,getOwnerDetails,Projectspecific,itemsspecific,getSingleProject,single, getInterestedStudents,allotProject}}>
+        <ItemContext.Provider value={{details, allProjectsProf, allProjectsStudent,allProjectsState,createProject,updateProject,deleteProject,selectproject,deselectproject,getOwnerDetails,Projectspecific,itemsspecific,getSingleProject,single, getInterestedStudents,allotProject}}>
             {props.children}
         </ItemContext.Provider>
     )

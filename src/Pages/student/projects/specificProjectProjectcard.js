@@ -4,10 +4,14 @@ import ProjectContext from '../../../context/project/ProjectContext';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from 'react-redux';
+import StudentContext from '../../../context/student/StudentContext';
+import AuthContext from '../../../context/auth/AuthContext';
 
 const SpecificProjectProjectcard = () =>{
   
     //context info fetch
+    const { StudentMicrosoftLogin } = useContext(AuthContext);
+    const { increaseStepDone } = useContext(StudentContext);
     const {selectproject, deselectproject, getInterestedStudents } = useContext(ProjectContext);
     
 
@@ -29,16 +33,14 @@ const SpecificProjectProjectcard = () =>{
     const studentInfo = useSelector((state) => state.student.studentInfo);
 
 
-    //check if user has registered for the project or not
-   const user = localStorage.getItem('studId');
-
     const checkStudentRegisteredCount = () => 
     {
-      if(project[0].intrestedPeople)
+      if(project && project[0] && project[0].interestedPeople)
       {
-        project[0].intrestedPeople.map((emailcheck) => 
+        project[0].interestedPeople.map((emailcheck) => 
           {
             setStudentRegisteredCount(studentRegisteredCount+1);
+            const user = studentInfo.studInfo.mail;
             if(emailcheck === user)setIsRegistered(1);
           });
       }
@@ -68,7 +70,6 @@ const SpecificProjectProjectcard = () =>{
         e.preventDefault();
 
         const x = await selectproject( studentInfo.studInfo.mail, id);
-        alert(x)
 
         //check
         if(x === 200){
@@ -76,7 +77,10 @@ const SpecificProjectProjectcard = () =>{
               position: 'top-center'
             });
             setIsRegistered(1); 
-          
+            await increaseStepDone(studentInfo.studInfo.mail);
+
+            //get all interested student in the project
+            const y = await getInterestedStudents(id);
         }
         else if(x === 401)
         {
@@ -102,6 +106,22 @@ const SpecificProjectProjectcard = () =>{
                 position: 'top-center'
               });
         }
+        else if(x === 406)
+          {
+              toast.error('You have not uploaded grade card.', {
+                position: 'top-center'
+              });
+        }
+        else if(x === 407)
+          {
+              toast.error('You partner have not uploaded grade card.', {
+                position: 'top-center'
+              });
+        }
+        else if(x === 407)
+          {
+              await StudentMicrosoftLogin();
+        }
 
         else if(x === 500)
         {
@@ -109,6 +129,8 @@ const SpecificProjectProjectcard = () =>{
               position: 'top-center'
             });
         }
+        
+        setShowModal(false);
       }
 
 
@@ -209,7 +231,7 @@ const SpecificProjectProjectcard = () =>{
                   ?
                   <button 
                     id="myBtn" 
-                    className='disabled cursor-not-allowed mx-auto flex justify-center items-center no-underline w-32 rounded-md text-white div-1 font-semibold mt-2 hover:bg-red-700 text-sm md:text-lg' 
+                    className='disabled py-1 cursor-not-allowed mx-auto flex justify-center items-center no-underline w-32 rounded-md text-white div-1 font-semibold mt-2 hover:bg-red-700 text-sm md:text-lg' 
                     disabled 
                     style={{'backgroundColor':'#EC2D01'}}
                   >
@@ -230,53 +252,29 @@ const SpecificProjectProjectcard = () =>{
                 {/* modal on new project */}
                 {showModal
                 ?
-                <div>
-                {isRegistered === 1
-                  ?
-                  <div id="myModal" className="fixed top-12 left-20">
-                      <div className="flex">
-                        <span className="close">&times;</span>
-                        
-                        <div 
-                          id='myButton' 
-                          className='text-lg'
+                <div id="myModal" className="z-10 fixed top-1/4 left-1/3 w-full h-full">
+                  <div className="p-6 pt-2 rounded-md bg-gray-200 w-fit border border-gray-300 border-opacity-40 shadow-lg">
+                    <span 
+                      className="text-3xl flex justify-end"
+                    >
+                      <div className='cursor-pointer text-gray-600 text-4xl' onClick={() => {setShowModal(false)}}>&times;</div>
+                    </span>
+                    <div 
+                      id='myButton' 
+                      className='flex items-center text-lg pt-4 gap-3'
+                    >
+                        Are you sure you want to Register? 
+                        <Link 
+                          className='flex justify-center items-center no-underline w-fit px-3 py-1 rounded-md text-white div-1 font-medium bg-yellow-600 hover:bg-yellow-700' 
+                          onClick={registerProject}
                         >
-                            Are you sure you want to De-register? 
-                            <div 
-                              className='flex justify-center items-center no-underline w-32 rounded-md text-white div-1 font-medium' 
-                              style={{'backgroundColor':'#EC2D01'}} 
-                            >
-                                De-Register
-                            </div>
-                        </div>
+                            Register
+                        </Link>
                       </div>
-                    </div>
-                    :
-                    <div id="myModal" className="z-10 fixed top-1/4 left-1/3 w-full h-full">
-                      <div className="p-6 pt-2 rounded-md bg-gray-200 w-fit border border-gray-300 border-opacity-40 shadow-lg">
-                        <span 
-                          className="text-3xl flex justify-end"
-                        >
-                          <div className='cursor-pointer text-gray-600 text-4xl' onClick={() => {setShowModal(false)}}>&times;</div>
-                        </span>
-                        <div 
-                          id='myButton' 
-                          className='flex items-center text-lg pt-4 gap-3'
-                        >
-                            Are you sure you want to Register? 
-                            <Link 
-                              className='flex justify-center items-center no-underline w-fit px-3 py-1 rounded-md text-white div-1 font-medium bg-yellow-600 hover:bg-yellow-700' 
-                              onClick={registerProject}
-                            >
-                                Register
-                            </Link>
-                          </div>
-                      </div>
-                    </div>
-                  } 
                   </div>
-                  :
-                  ""}
+                </div>
+                :
+                ""}
               </div>
               {/* modal */}      
               

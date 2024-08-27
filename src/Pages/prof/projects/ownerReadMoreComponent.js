@@ -115,7 +115,7 @@ const Specificprojectcard=()=> {
       
       const clickHandler = async (name1,name2) => {
         setLoading(true);
-        const x = await allotProject(id,name1,name2);
+        const x = await allotProject(id, name1, name2);
           
         if(x === 200){
           setLoading(false);
@@ -160,7 +160,7 @@ const Specificprojectcard=()=> {
                                     <div className="text-xs font-medium md:font-semibold lowercase">{individual[0]}</div>
                                     <div className="flex flex-row">
                                     <div className="text-xs text-white pr-2">Grade Card <i class="fa-solid fa-download text-sm"></i></div>
-                                    <div className="text-xs text-white ">Resume <i class="fa-solid fa-download text-sm"></i></div>
+                                    <div className="text-xs text-white ">Resume <Link to={individual[0].gradeCardUrl} class="fa-solid fa-download text-sm"></Link></div>
                                     </div>
                                   </div>
                                   <div className="p-2 flex flex-col">

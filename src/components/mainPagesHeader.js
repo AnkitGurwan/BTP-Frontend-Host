@@ -31,7 +31,7 @@ const MainPagesHeader = () => {
                 </span> 
             </div> 
             
-            <span className='flex items-center gap-1'>
+            <span className='flex items-center gap-1 pr-2'>
                 <i className='fa-solid fa-right-from-bracket font-bold text-xs md:text-xl md:mx-1'></i> 
                 <div 
                     className='cursor-pointer no-underline hover:bg-red-700 text-white bg-red-600 p-1 rounded-md text-center text-xs md:text-lg font-medium md:font-semibold' 

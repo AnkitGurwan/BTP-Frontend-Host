@@ -107,13 +107,17 @@ const AddPartnerPage = () => {
         getItem();
     }, [random]); 
 
+    const handleBack = () => {
+        navigate('/btp/student/projects');
+    }
+
 
     return (
         <div>
-            <Header></Header>
 
             <div className="max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 my-10">
                 <div className="mb-5">
+                    <h3 className="text-xl sm:text-2xl font-normal text-blue-600 border rounded-lg w-fit p-2 mb-6 hover:text-white hover:bg-blue-400 cursor-pointer" onClick={handleBack}>Return Home</h3>
                     <h2 className="text-xl sm:text-2xl font-semibold">Add Project Partner</h2>
                     <form
                         className="mt-4 flex flex-col sm:flex-row"

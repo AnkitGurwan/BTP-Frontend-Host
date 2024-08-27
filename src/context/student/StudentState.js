@@ -10,11 +10,80 @@ const StudentState = (props) => {
     const dispatch = useDispatch();
 
     //local backend url for testing
-    const url = process.env.REACT_APP_BACKEND_URL;
+    const url = 'http://localhost:5001';
 
     //hosted backend url
     // const url = process.env.REACT_APP_BACKEND_URL;
 
+
+    //check student documents uploaded or not
+    const checkDocumentUploaded = async ( email ) => {
+        const response = await fetch(`${url}/student/documents/${email}`, {
+            method: 'GET',
+            credentials:'include',
+            headers: {
+                'Content-Type': "application/json"
+            }
+        });
+        
+        return response.status;
+    }
+
+    //check student signed copy uploaded or not
+    const checkSignedCopyUpload = async ( email ) => {
+        const response = await fetch(`${url}/student/signedcopy/${email}`, {
+            method: 'GET',
+            credentials:'include',
+            headers: {
+                'Content-Type': "application/json"
+            }
+        });
+        
+        return response.status;
+    }
+
+    //upload grade card url in mongo db
+    const uploadGradeCardMongo = async ( email, url2 ) => {
+        const response = await fetch(`${url}/student/uploadgradecard/${email}`, {
+            method: 'PATCH',
+            credentials:'include',
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify({ url2 })
+        });
+        
+        return response.status;
+    }
+
+
+    //upload signed copy in mongo db
+    const uploadDoc = async ( email, url2 ) => {
+        const response = await fetch(`${url}/student/uploadsignedcopy/${email}`, {
+            method: 'PATCH',
+            credentials:'include',
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify({ url2 })
+        });
+        
+        return response.status;
+    }
+
+    //upload grade card url in mongo db
+    const uploadResumeMongo = async ( email, url2 ) => {
+        const response = await fetch(`${url}/student/uploadresume/${email}`, {
+            method: 'PATCH',
+            credentials:'include',
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify({ url2 })
+        });
+        
+        return response.status;
+    }
 
     //check student is alloted project or not
     const checkStudentAlloted = async ( userEmail ) => {
@@ -137,7 +206,7 @@ const StudentState = (props) => {
 
 
     const getAllStudent = async ()=>{     
-        const response = await fetch(`${url}/student/allstudents`, {
+        const response = await fetch(`${url}/student/getallstudents`, {
             method: 'GET',
             credentials:'include',
             headers: {
@@ -192,7 +261,7 @@ const StudentState = (props) => {
     
         
     return (
-        <StudentContext.Provider value={{LogOut,createStudent, addPartner, finalPartner, partnerRequest, sentRequest, checkStudentAlloted, findStepDone, increaseStepDone, checkStudentEligible, sendFeedback, getAllStudent}}>
+        <StudentContext.Provider value={{LogOut,createStudent, addPartner, finalPartner, partnerRequest, sentRequest, checkStudentAlloted, findStepDone, increaseStepDone, checkStudentEligible, sendFeedback, getAllStudent, checkDocumentUploaded, uploadGradeCardMongo, uploadResumeMongo, checkSignedCopyUpload, uploadDoc}}>
             {props.children}
         </StudentContext.Provider>
     )

@@ -11,12 +11,14 @@ import AuthContext from '../../../context/auth/AuthContext';
 const OwnerProjectsComponent = () => {
   const { Projectspecific, createProject } = useContext(ProjectContext);
   const { ProfMicrosoftLogin } = useContext(AuthContext);
-  const { getProfDetailsFromMicrosoft, checkProfEligible, createProf } = useContext(ProfContext);
+  const { getProfDetailsFromMicrosoft, createProf } = useContext(ProfContext);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [allowed, setAllowed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [random, setRandom] = useState(false);
+  const [reqInputGrade, setReqInputGrade] = useState(false);
+  const [reqInputResume, setReqInputResume] = useState(false);
 
   const [count, setCount] = useState(0);
 
@@ -33,12 +35,10 @@ const OwnerProjectsComponent = () => {
       }
       else if(x === 409 || x === 410)
       {
-          setLoading(false); 
           setAllowed(false);
       }
       else 
       {
-          setLoading(false); 
           setAllowed(true);
       }
 
@@ -71,6 +71,7 @@ const OwnerProjectsComponent = () => {
               setAllowed(true);
           }
       }
+      setRandom(true);
   };
 
 
@@ -94,6 +95,15 @@ const OwnerProjectsComponent = () => {
     isbanned: false
   });
 
+  const handleInputChange = (e) => {
+    const { name, checked } = e.target;
+    if (name === 'reqInputGrade') {
+      setReqInputGrade(true);
+    } else if (name === 'reqInputResume') {
+      setReqInputResume(true);
+    }
+  };
+
   const onChangeHandler = (e) => {
     setItemData({ ...itemData, [e.target.name]: e.target.value });
   };
@@ -113,7 +123,9 @@ const OwnerProjectsComponent = () => {
           itemData.specialization,
           itemData.date,
           itemData.time,
-          itemData.isbanned
+          itemData.isbanned,
+          reqInputGrade,
+          reqInputResume
         );
 
         if (x === 200) {
@@ -153,7 +165,7 @@ const OwnerProjectsComponent = () => {
       
       if (profInfo && profInfo.profInfo)
       {
-        window.open(`${process.env.REACT_APP_BACKEND_URL}/project/intrestedpeople/${profInfo.profInfo.mail}`,
+        window.open(`${process.env.REACT_APP_BACKEND_URL}/project/interestedpeople/${profInfo.profInfo.mail}`,
         '_blank');
       
       };
@@ -277,9 +289,9 @@ const OwnerProjectsComponent = () => {
               </div>
 
                 <div
-                  className="flex items-center pl-4 md:pl-24 lg:pl-48 bg-gray-200"
+                  className="flex items-center pl-4 md:pl-24 lg:pl-48 bg-gray-200 fixed bottom-0"
                   style={{
-                      height: "15vh",
+                      height: "10vh",
                       width: "100vw",
                       margin: "auto",
                       display: "flex",
@@ -371,7 +383,7 @@ const OwnerProjectsComponent = () => {
                   </label>
                   <textarea
                     id="message"
-                    rows="5"
+                    rows="4"
                     className="block w-full text-sm text-gray-800 bg-gray-50 rounded-lg border border-gray-300 focus:outline-none focus:shadow-outline dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 px-3 py-2"
                     placeholder="Write project details..."
                     name="abstract"
@@ -415,6 +427,19 @@ const OwnerProjectsComponent = () => {
                     required
                   />
                 </div>
+
+                <div className='flex items-center gap-4 mb-3'>
+                  <label className='flex items-center'>
+                    <input className='cursor-pointer mr-1' onChange={handleInputChange} type='checkbox' onch value={reqInputGrade} name='reqInputGrade'/>
+                    Grade Card required
+                  </label>
+                  <br/>
+                  <label className='flex items-center'>
+                    <input className='cursor-pointer mr-1' onChange={handleInputChange} type='checkbox' value={reqInputResume} name='reqInputResume'/>
+                    Resume/CV required
+                  </label>
+                </div>
+
 
                 <div className="flex items-center justify-center">
                   <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-100" type="submit">

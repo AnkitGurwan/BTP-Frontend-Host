@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 var _ = require('lodash');
-const url = "http://localhost:5000";
 
 const initialState = {
     specificProjects : [],

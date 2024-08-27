@@ -11,7 +11,7 @@ const ProfState = (props) => {
 
 
     const checkProfEligible = ( job, roll ) => {
-        console.log("kk")
+        
         if (
         job === "Associate Professor" || 
         job === "ASSOCIATE PROFESSOR" || 
@@ -23,7 +23,7 @@ const ProfState = (props) => {
         job === "Professor" || 
         roll === "210103016" ||
         roll ==="210103120"
-        ) {console.log(true)
+        ) {
             return true;
         } 
         else {

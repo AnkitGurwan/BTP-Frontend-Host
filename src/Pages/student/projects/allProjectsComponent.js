@@ -13,7 +13,7 @@ import CourseStructure from './courseStructure.js';
 const AllProjectsComponent = () => {
 
     //context apis
-    const { allProjects } = useContext(ProjectContext);
+    const { allProjectsStudent } = useContext(ProjectContext);
     const { getUserDetailsFromMicrosoft, StudentMicrosoftLogin } = useContext(AuthContext);
     const { createStudent, checkStudentAlloted, findStepDone, LogOut, getAllStudent } = useContext(StudentContext);
     
@@ -38,7 +38,7 @@ const AllProjectsComponent = () => {
     
 
     const sortProjects = () => {
-        if(items)
+        if(items && items.length > 0)
         {
             const allotedProjects = items.filter((item) => item.allotedPeople.length > 0);
             const unAllotedProjects = items.filter((item) => item.allotedPeople.length === 0);
@@ -53,13 +53,15 @@ const AllProjectsComponent = () => {
 
         await getUserDetailsFromMicrosoft();
 
+        await getAllStudent();
+
        //get all projects
-        const x = await allProjects();
-        if(x === 408)
+        const x = await allProjectsStudent();
+        if(x === 408 || x === 410)
         {
             await StudentMicrosoftLogin();
         }
-        else if(x === 409 || x === 410)
+        else if(x === 409)
         {
             setLoading(false); 
             setAllowed(false);
@@ -118,13 +120,13 @@ const AllProjectsComponent = () => {
 
         getPartner();
         
-        if(items.length === 0)getItem();
+        getItem();
     }, [random]);
 
     
 
     const getPartner = () => {
-        if (students && studentInfo && studentInfo.studInfo)
+        if (students && students.length > 0 && studentInfo && studentInfo.studInfo)
         {
             const studId = students.filter((student) => student.email === studentInfo.studInfo.mail).map((student, i) => {
                 return student._id;
@@ -159,7 +161,8 @@ const AllProjectsComponent = () => {
         "Choose your partner (Note :- Send your partner a request from above link. Refrain from sending unwanted requests)",
         "Register for a project (Note :- You can register for multiple projects at a time but you will be alloted only one project)",
         "Allotment pending at professor end for one or more projects",
-        "Upload signed copy of BTP-form of your alloted project at given link. Both partners have to fill their information for furhter preceding."
+        "Upload signed copy of BTP-form of your alloted project at given link. Both partners have to fill their information and upload the signed copy.",
+        "Done all."
     ]
 
     const handlerNextWork = async () => {
@@ -378,7 +381,7 @@ const AllProjectsComponent = () => {
                         <div>
                         <div className='text-center'>
                             <div className="text-sm md:text-lg">
-                            Deadline to Register is 31 January, 2024 EOD
+                            Deadline to Register is 31st June, 2025 EOD
                             </div>
                             <br />
                         </div>
@@ -405,7 +408,7 @@ const AllProjectsComponent = () => {
                     <hr/>
 
                     <div className='w-full flex justify-start py-4 px-8 text-white text-xl'>
-                        <div className='px-4 py-2 rounded-md w-fit bg-red-600 bg-opacity-80'>Alloted Projects ({allProjects.length})</div>
+                        <div className='px-4 py-2 rounded-md w-fit bg-red-600 bg-opacity-80'>Alloted Projects ({allotedProjects.length})</div>
                     </div>
                     <div className='grid grid-cols-2 gap-2 md:gap-4 pt-4 pb-2 px-2 md:px-6 md:grid-cols-3 lg:grid-cols-5'>
                         {allotedProjects

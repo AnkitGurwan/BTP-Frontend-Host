@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ProfDetails = (props) => {
-    const { detail }=props;
+    const { detail } = props;
    
     return(
     <div className='w-full mx-auto bg-gray-100' style={{'fontFamily':'Manrope'}}>

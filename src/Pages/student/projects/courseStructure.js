@@ -6,7 +6,7 @@ const courseStructure = () => {
             id='course'
             className="flex justify-center"
         >
-            <div className="w-1/3 border rounded-md mb-4">
+            <div className="w-2/3 md:w-1/3 border rounded-md mb-4">
                 <div>
                     <img
                     src="https://iitg.ac.in/mech/static/images/placeholdercourse.jpg"

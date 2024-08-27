@@ -6,7 +6,7 @@ import Proflogin from './loginComponent.js';
 const ProfAuth = () => {
     return (
         <div className='h-[100vh] w-full bg-gray-200 overflow-y-hidden'>
-            <div className='w-full h-[20vh]'>
+            <div className='w-full h-[12vh] md:h-[15vh]'>
                 <Header />
             </div>
             <div className='w-full h-[80vh]'>

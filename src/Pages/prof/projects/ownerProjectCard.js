@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { MdOutlineUpdate } from "react-icons/md";
 
 const Projectcard = (props) => {
-    const {project} = props;
+    const { project } = props;
    
     return(
         <div className='mx-auto w-full text-gray-600' style={{fontFamily: "Manrope"}}>
@@ -45,7 +45,9 @@ const Projectcard = (props) => {
                     </h6> 
 
                     <div className='pt-2 pb-4 pr-6 flex justify-end items-center'>
-                        <Link className="material-symbols-outlined hover:text-blue-600" to={`/btp/prof/owner/update/${project._id}`}>group_add</Link>
+                        <Link className="material-symbols-outlined hover:text-blue-600" to={`/btp/prof/owner/update/${project._id}`}>
+                            <MdOutlineUpdate />
+                        </Link>
                     </div>
                 </div>
             </div>
