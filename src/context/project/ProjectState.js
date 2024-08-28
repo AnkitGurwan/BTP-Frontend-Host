@@ -84,7 +84,8 @@ const ItemState=(props)=>{
         return response.status;
     };
 
-    const createProject = async (email, title, brief_abstract, co_supervisor, specialization, gradeCardRequired, resumeRequired) => {
+    const createProject = async (email, title, brief_abstract, co_supervisor, specialization, date, time, is_banned, gradeCardRequired, resumeRequired) => {
+
             const response = await fetch(`${url}/project/newProject/${email}`, {
                 method: 'POST',
                 credentials:'include',
