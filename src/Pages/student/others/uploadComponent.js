@@ -29,7 +29,6 @@ const UploadComponent = () => {
     const studentInfo = useSelector((state) => state.student.studentInfo);
 
     const checkerFunc = async () => {
-
         if(studentInfo && studentInfo.studInfo)
         {
             const x = await checkDocumentUploaded(studentInfo.studInfo.mail);
@@ -199,7 +198,7 @@ const UploadComponent = () => {
                     <div className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">
-                                Upload Grade Card
+                                Upload Grade Cardd
                             </label>
                             <div className='flex gap-2 pt-2 items-center'>
                                 {checkGrade

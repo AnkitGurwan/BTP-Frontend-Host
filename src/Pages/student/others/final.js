@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 
 const UploadComponent = () => {
 
-    const { uploadGradeCardMongo, uploadResumeMongo, checkDocumentUploaded, increaseStepDone } = useContext(StudentContext);
+    const { createStudent, uploadGradeCardMongo, uploadResumeMongo, checkDocumentUploaded, increaseStepDone } = useContext(StudentContext);
     const { getUserDetailsFromMicrosoft, StudentMicrosoftLogin } = useContext(AuthContext);
 
     const [uploadGrade, setUploadGrade] = useState("");
@@ -32,7 +32,14 @@ const UploadComponent = () => {
 
         if(studentInfo && studentInfo.studInfo)
         {
+            await createStudent(
+                studentInfo.studInfo.mail,
+                studentInfo.studInfo.displayName,
+                studentInfo.studInfo.surname
+            );   
+
             const x = await checkDocumentUploaded(studentInfo.studInfo.mail);
+
             if(x === 200)
             {
                 setCheckGrade(true);
@@ -43,19 +50,29 @@ const UploadComponent = () => {
 
                 navigate('/btp/student/projects')
             }
-            else if(x === 211)
-            {
-                navigate('/btp/student/document/upload')
-            }
             else if(x === 201)
             {
                 setCheckGrade(true);
                 setCheckResume(false);
+
+                setLoading1(false);
+                setLoading2(false);
             }
             else if(x === 202)
             {
                 setCheckGrade(false);
                 setCheckResume(true);
+
+                setLoading1(false);
+                setLoading2(false);
+            }
+            else if(x === 203)
+            {
+                setCheckGrade(false);
+                setCheckResume(false);
+
+                setLoading1(false);
+                setLoading2(false);
             }
             else if ( x === 408)
             {

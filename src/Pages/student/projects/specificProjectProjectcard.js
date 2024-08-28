@@ -252,7 +252,7 @@ const SpecificProjectProjectcard = () =>{
                 {/* modal on new project */}
                 {showModal
                 ?
-                <div id="myModal" className="z-10 fixed top-1/4 left-1/3 w-full h-full">
+                <div id="myModal" className="z-10 fixed top-1/4 left-0 md:left-1/3 w-full h-full p-2">
                   <div className="p-6 pt-2 rounded-md bg-gray-200 w-fit border border-gray-300 border-opacity-40 shadow-lg">
                     <span 
                       className="text-3xl flex justify-end"
