@@ -343,7 +343,7 @@ const AllProjectsComponent = () => {
                             </h1>
                             <p className="text-sm md:text-lg">B.Tech. in Mechanical Engineering</p>
                         </div>
-                        <div className="w-full md:w-1/2 bg-gray-700 rounded-md p-4 overflow-hidden">
+                        {/* <div className="w-full md:w-1/2 bg-gray-700 rounded-md p-4 overflow-hidden">
                             <div className='w-full rounded-lg h-4 border border-gray-400 border-opacity-40'>
                                 <div className={`${progress === 5 ? "rounded-lg" : "rounded-l-lg"} h-4 bg-green-400`} style={{ width: `${(progress) * 20}%` }}></div>
                             </div>
@@ -359,7 +359,7 @@ const AllProjectsComponent = () => {
                                     Next- {nextWork}
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
         
                     {/* description */}
