@@ -29,7 +29,6 @@ const ItemState=(props)=>{
                 'Content-Type': "application/json"
             }
         });
-        console.log("r",response)
         const json = await response.json();
 
         //reverse the array to get the latest project at top
@@ -53,7 +52,6 @@ const ItemState=(props)=>{
                 'Content-Type': "application/json"
             }
         });
-        console.log("r",response)
         const json = await response.json();
 
         //reverse the array to get the latest project at top

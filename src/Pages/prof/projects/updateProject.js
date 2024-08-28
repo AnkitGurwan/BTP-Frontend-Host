@@ -26,7 +26,6 @@ const NewProject=()=> {
 
 
     const items = useSelector(state => state.allProjects.specificProjects);
-    console.log(items);
     const profInfo = useSelector(state => state.prof.profInfo);
 
 

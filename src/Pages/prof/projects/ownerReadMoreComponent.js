@@ -78,7 +78,6 @@ const Specificprojectcard=()=> {
         const y = await getSingleProject(id);
 
         if(y){
-          // console.log("y",y)
           const isbanned = y.is_banned;
           setAlloted(isbanned);
         }
@@ -108,7 +107,6 @@ const Specificprojectcard=()=> {
       i++;
     }
     studentRegisteredList = newArray;
-    // console.log("jj",newArray)
 
     
  
