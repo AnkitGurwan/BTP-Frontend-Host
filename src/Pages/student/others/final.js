@@ -12,27 +12,67 @@ import { Link } from 'react-router-dom';
 
 const UploadComponent = () => {
 
-    const { uploadDoc } = useContext(StudentContext);
+    const { uploadGradeCardMongo, uploadResumeMongo, checkDocumentUploaded, increaseStepDone } = useContext(StudentContext);
     const { getUserDetailsFromMicrosoft, StudentMicrosoftLogin } = useContext(AuthContext);
 
-    const [uploadSignedCopy, setUploadSignedCopy] = useState("");
-    const [checkDoc, setCheckDoc] = useState(false);
-    
+    const [uploadGrade, setUploadGrade] = useState("");
+    const [uploadResume, setUploadResume] = useState("");
+    const [checkGrade, setCheckGrade] = useState(false);
+    const [checkResume, setCheckResume] = useState(false);
     const [allowed, setAllowed] = useState(true);
     const [random, setRandom] = useState(false);
-    const [loading1, setLoading1] = useState(false);
+    const [loading1, setLoading1] = useState(true);
+    const [loading2, setLoading2] = useState(true);
 
     const navigate = useNavigate();
 
     const studentInfo = useSelector((state) => state.student.studentInfo);
 
-    const getItem = async () => {
-        const x = await getUserDetailsFromMicrosoft();
+    const checkerFunc = async () => {
 
-        if ( x === 409 || x === 410)
+        if(studentInfo && studentInfo.studInfo)
         {
-            await StudentMicrosoftLogin();
+            const x = await checkDocumentUploaded(studentInfo.studInfo.mail);
+            if(x === 200)
+            {
+                setCheckGrade(true);
+                setCheckResume(true);
+
+                setLoading1(false);
+                setLoading2(false);
+
+                navigate('/btp/student/projects')
+            }
+            else if(x === 211)
+            {
+                navigate('/btp/student/document/upload')
+            }
+            else if(x === 201)
+            {
+                setCheckGrade(true);
+                setCheckResume(false);
+            }
+            else if(x === 202)
+            {
+                setCheckGrade(false);
+                setCheckResume(true);
+            }
+            else if ( x === 408)
+            {
+                setAllowed(false);
+            }
+            else if ( x === 409 || x === 410)
+            {
+                await StudentMicrosoftLogin();
+            }
         }
+    }
+
+
+    const getItem = async () => {
+        await getUserDetailsFromMicrosoft();
+
+        checkerFunc();
 
         setRandom(true);
     }
@@ -43,7 +83,8 @@ const UploadComponent = () => {
     const handleGrade = (e) => {
         e.preventDefault();
 
-        if(uploadSignedCopy === "")
+        setLoading1(true);
+        if(uploadGrade === "")
         {
             toast.error("No grade card Selected", {
                 position: 'top-center'
@@ -51,11 +92,9 @@ const UploadComponent = () => {
             return;
         }
         
-        setLoading1(true);
+        const uploadFileRef = fire.storage().ref(`uploads/mesa/${ uploadGrade.name}`);
         
-        const uploadFileRef = fire.storage().ref(`uploads/signedcopy/${ uploadSignedCopy.name}`);
-        
-        uploadFileRef.put(uploadSignedCopy).on("state_changed", (snapshot) => {
+        uploadFileRef.put(uploadGrade).on("state_changed", (snapshot) => {
             const progress = Math.round(
             (snapshot.bytesTransferred/ snapshot.totalBytes) * 100
             );
@@ -74,19 +113,19 @@ const UploadComponent = () => {
                 
                 const email = studentInfo.studInfo.mail;
 
-                setCheckDoc(true);
+                setCheckGrade(true);
 
-                const x = await uploadDoc(email, fileData);
+                const x = await uploadGradeCardMongo(email, fileData);
                 if(x === 200)
                 {
-                    setUploadSignedCopy("");
+                    setUploadGrade("");
                     toast.success("Grade Card Uploaded Successfully", {
                         position: 'top-center'
                     });
                 }
                 else
                 {
-                    setUploadSignedCopy("");
+                    setUploadGrade("");
                     toast.error("Couldn't upload at the moment.", {
                         position: 'top-center'
                     });
@@ -95,10 +134,60 @@ const UploadComponent = () => {
                 });
     }
 
-    const download = async (e) => {
+    const handlerResume = (e) => {
         e.preventDefault();
+
+        setLoading2(true);
+
+        if(uploadResume === "")
+        {
+            toast.error("No Resume Selected", {
+                position: 'top-center'
+            });
+            return;
+        }
         
-        window.open(``,'_blank');
+        const uploadFileRef = fire.storage().ref(`uploads/mesa/${ uploadResume.name}`);
+        
+        uploadFileRef.put(uploadResume).on("state_changed", (snapshot) => {
+            const progress = Math.round(
+            (snapshot.bytesTransferred/ snapshot.totalBytes) * 100
+            );
+        },
+        (error)=>{
+            console.log(error)
+        },
+            async () => {
+                const fileData = await uploadFileRef.getDownloadURL();
+
+                if(!studentInfo || !studentInfo.studInfo)
+                {
+                    await StudentMicrosoftLogin();
+                    return;
+                }
+                const email = studentInfo.studInfo.mail;
+
+                setCheckResume(true);
+
+                const x = await uploadResumeMongo(email, fileData);
+                await increaseStepDone(email);
+
+                if(x === 200)
+                {
+                    setUploadResume("");
+                    toast.success("Resume Uploaded Successfully", {
+                        position: 'top-center'
+                    });
+                }
+                else
+                {
+                    setUploadResume("");
+                    toast.error("Couldn't upload at the moment.", {
+                        position: 'top-center'
+                    });
+                }
+                setLoading2(false);
+                });
     }
 
     return(
@@ -108,31 +197,12 @@ const UploadComponent = () => {
                 ?
                 <div className="max-w-md mx-auto my-10 bg-white p-8 rounded-lg shadow">
                     <div className="space-y-4">
-                        <div
-                            className="w-fit flex items-center border rounded-md"
-                        >
-                            <div
-                            className="text-xs md:text-sm p-2 border-r"
-                            >
-                            Download document ( Kindly fill all the information and upload it below )
-                            </div>
-                            <i
-                            className="fa-solid fa-download text-2xl px-4"
-                            onClick={download}
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                            }}
-                            ></i>
-                        </div>
-                        <div className='pt-4'>
+                        <div>
                             <label className="block text-sm font-medium text-gray-700">
                                 Upload Grade Card
                             </label>
                             <div className='flex gap-2 pt-2 items-center'>
-                                {checkDoc
+                                {checkGrade
                                 ?
                                 <input
                                     type="file"
@@ -145,7 +215,7 @@ const UploadComponent = () => {
                                 <input
                                     type="file"
                                     name="gradeCard"
-                                    onChange={(e) => {setUploadSignedCopy(e.target.files[0])}}
+                                    onChange={(e) => {setUploadGrade(e.target.files[0])}}
                                     className="block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm leading-4 font-medium text-gray-700"
                                     required
                                 />}
@@ -155,7 +225,7 @@ const UploadComponent = () => {
                                     <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>
                                 </div>
                                 :
-                                checkDoc
+                                checkGrade
                                 ?
                                 <div className='w-1/4 flex items-center'>
                                     <Checkmark size='24px' color='green' />
@@ -169,7 +239,48 @@ const UploadComponent = () => {
                                 </button>}
                             </div>
                         </div>
-                        
+                        <div className='py-4'>
+                            <label className="block text-sm font-medium text-gray-700">
+                                Upload CV (Optional) -If not uploaded then cannot apply for projects in which CV is required.
+                            </label>
+                            <div className='flex gap-2 pt-2'>
+                                {checkResume
+                                ?
+                                <input
+                                    type="file"
+                                    name="gradeCard"
+                                    disabled
+                                    className="block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm leading-4 font-medium text-gray-700"
+                                    required
+                                />
+                                :
+                                <input
+                                    type="file"
+                                    name="cv"
+                                    onChange={(e) => {setUploadResume(e.target.files[0])}}
+                                    className="block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm leading-4 font-medium text-gray-700"
+                                />}
+
+                                {loading2
+                                ?
+                                <div className="w-1/4 flex items-center justify-center">
+                                    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-gray-900"></div>
+                                </div>
+                                :
+                                checkResume
+                                ?
+                                <div className='w-1/4 flex items-center'>
+                                    <Checkmark size='24px' color='green' />
+                                </div>
+                                :
+                                <button
+                                    onClick={handlerResume}
+                                    className="w-1/4 flex justify-center h-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    Upload
+                                </button>}
+                            </div>
+                        </div>
                         <Link
                             to="/btp/student/projects"
                             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

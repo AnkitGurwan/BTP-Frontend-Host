@@ -10,10 +10,10 @@ const StudentState = (props) => {
     const dispatch = useDispatch();
 
     //local backend url for testing
-    const url = 'http://localhost:5001';
+    // const url = 'http://localhost:5001';
 
     //hosted backend url
-    // const url = process.env.REACT_APP_BACKEND_URL;
+    const url = process.env.REACT_APP_BACKEND_URL;
 
 
     //check student documents uploaded or not
