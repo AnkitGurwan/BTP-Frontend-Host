@@ -17,7 +17,7 @@ const InterfacePageHeader = () => {
                 <div className='hidden md:block text-white text-xs md:text-3xl font-medium md:font-bold'>
                     Department of Mechanical Engineering
                 </div>
-                <div className='hidden md:block text-xs md:text-2xl font-medium md:font-semibold'>
+                <div className='hidden md:block text-xs md:text-2xl font-medium md:font-semibold select-none'>
                     Indian Institute of Technology, Guwahati
                 </div>
             </span> 

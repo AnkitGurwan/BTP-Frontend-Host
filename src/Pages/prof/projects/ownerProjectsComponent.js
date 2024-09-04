@@ -239,7 +239,7 @@ const OwnerProjectsComponent = () => {
         ?
         <div className='flex justify-between items-center p-2 md:p-4'>
           <div
-                className="w-fit flex items-center border p-2 rounded-md"
+                className="w-fit flex items-center border ml-1 md:ml-2 p-2 rounded-md"
               >
                 <div
                   className="text-xs md:text-lg pr-3"
@@ -350,7 +350,7 @@ const OwnerProjectsComponent = () => {
         {/* modal on new project */}
         {showModal
           ?
-          <div id="myModal" className="z-10 absolute top-0 flex justify-center items-center w-full h-full backdrop-blur-50">
+          <div id="myModal" className="z-10 absolute top-0 flex justify-center items-center w-full h-full bg-black bg-opacity-50 backdrop-blur-sm">
             <div className="px-1 md:px-4 pb-2 rounded-md bg-white w-4/5 md:w-1/2 border border-gray-300 border-opacity-40 shadow-md">
               <span 
                 className="pr-2 text-4xl flex justify-end"

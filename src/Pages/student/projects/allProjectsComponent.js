@@ -335,7 +335,7 @@ const AllProjectsComponent = () => {
                         </div>
                     </nav>
         
-                    <div className="flex flex-col md:flex-row items-center justify-between w-full px-4 md:px-12 py-4 bg-gray-800 text-white">
+                    <div className="flex flex-col md:flex-row items-start justify-between w-full px-4 md:px-12 py-4 bg-gray-800 text-white">
                         <div className='flex-col'>
                             <h1 className="light text-2xl md:text-3xl">Welcome,</h1>
                             <h1 className="font-medium py-1 text-2xl md:text-3xl">
@@ -363,7 +363,7 @@ const AllProjectsComponent = () => {
                     </div>
         
                     {/* description */}
-                    <div className="my-6 border px-4 md:px-12 py-5 rounded-md">
+                    <div className="my-6 border px-4 md:px-12 py-5 rounded-md mx-2">
                         <div className="pb-2 flex gap-1 items-center">
                             <i className="fa fa-book fa-fw text-xl"></i> 
                             <div className='text-xl font-medium'>BTP Phase I</div>
@@ -373,7 +373,7 @@ const AllProjectsComponent = () => {
                         <p>No description provided.</p>
                         <div className="container"></div>
                     </div>
-                    <div className="rounded-md my-4 ml-4 md:p-2 md:ml-12 w-2/3 md:w-1/3 bg-gray-100 p-2 text-gray-600" style={{'fontFamily':'Manrope'}}>
+                    <div className="rounded-md my-4 ml-2 md:p-2 md:ml-6 w-2/3 md:w-1/3 bg-gray-100 p-2 text-gray-600" style={{'fontFamily':'Manrope'}}>
                         <div className="caption titled text-sm md:text-lg font-bold">
                         → Pay attention
                         <div className="top-links"></div>
@@ -390,7 +390,7 @@ const AllProjectsComponent = () => {
 
                     <hr/>
         
-                    <div className='w-full flex justify-start py-4 px-8 text-white text-xl'>
+                    <div className='w-full flex justify-start py-4 px-4 md:px-6 text-white text-xl'>
                         <div className='px-4 py-2 rounded-md w-fit bg-green-600 bg-opacity-80'>Not Alloted till now ({unAllotedProjects.length})</div>
                     </div>
                     <div className='grid grid-cols-2 gap-2 md:gap-4 pt-4 pb-2 px-2 md:px-6 md:grid-cols-3 lg:grid-cols-5'>
@@ -407,7 +407,7 @@ const AllProjectsComponent = () => {
 
                     <hr/>
 
-                    <div className='w-full flex justify-start py-4 px-8 text-white text-xl'>
+                    <div className='w-full flex justify-start py-4 px-2 md:px-6 text-white text-xl'>
                         <div className='px-4 py-2 rounded-md w-fit bg-red-600 bg-opacity-80'>Alloted Projects ({allotedProjects.length})</div>
                     </div>
                     <div className='grid grid-cols-2 gap-2 md:gap-4 pt-4 pb-2 px-2 md:px-6 md:grid-cols-3 lg:grid-cols-5'>

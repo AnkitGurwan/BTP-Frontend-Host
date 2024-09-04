@@ -12,7 +12,7 @@ const Body2 = () => {
     return (
         <div className="w-full flex flex-col md:flex-row h-full">
             <div className="px-6 md:px-40 w-full">
-                <div className='pb-4 text-gray-900'  style={{"fontFamily":"Manrope"}}>
+                <div className='pb-4 text-gray-900 select-none'  style={{"fontFamily":"Manrope"}}>
                         <p className="text-xl md:text-2xl font-normal uppercase pt-2 text-gray-800">BTP Phase I - <b>Professor login</b></p>
                         <p className="text-sm md:text-lg text-gray-800 leading-5">NOTE - Kindly refrain from login if you are not a professor.</p>
                         <div

@@ -154,19 +154,19 @@ const Specificprojectcard=()=> {
                     ?
                     studentRegisteredList.map((individual) => {
                       return    (<div className="grid grid-cols-1 md:grid-cols-3 md:p-2 py-2 mb-4 bg-green-500 rounded-sm text-white">
-                                  <div className="p-2 flex flex-col">
+                                  <div className="p-2 flex flex-col justify-center">
                                     <div className="text-xs font-medium md:font-semibold lowercase">{individual[0]}</div>
-                                    <div className="flex flex-row">
-                                    <div className="text-xs text-white pr-2">Grade Card <i class="fa-solid fa-download text-sm"></i></div>
-                                    <div className="text-xs text-white ">Resume <Link to={individual[0].gradeCardUrl} class="fa-solid fa-download text-sm"></Link></div>
-                                    </div>
+                                    {/* <div className="flex flex-row"> */}
+                                    {/* <div className="text-xs text-white pr-2">Grade Card <i class="fa-solid fa-download text-sm"></i></div>
+                                    <div className="text-xs text-white ">Resume <Link to={individual[0].gradeCardUrl} class="fa-solid fa-download text-sm"></Link></div> */}
+                                    {/* </div> */}
                                   </div>
-                                  <div className="p-2 flex flex-col">
+                                  <div className="p-2 flex flex-col justify-center">
                                     <div className="text-xs font-medium md:font-semibold lowercase">{individual[1]}</div>
-                                    <div className="flex">
-                                    <div className="text-xs text-white pr-2">Grade Card <i class="fa-solid fa-download text-xs"></i></div>
-                                    <div className="text-xs text-white ">Resume <i class="fa-solid fa-download text-xs"></i></div>
-                                    </div>
+                                    {/* <div className="flex"> */}
+                                    {/* <div className="text-xs text-white pr-2">Grade Card <i class="fa-solid fa-download text-xs"></i></div> */}
+                                    {/* <div className="text-xs text-white ">Resume <i class="fa-solid fa-download text-xs"></i></div> */}
+                                    {/* </div> */}
                                   </div>
                                   <div onClick={()=>{clickHandler(individual[0],individual[1]);}} className="my-2 mx-4 p-1 flex justify-center items-center font-bold rounded-md text-white bg-red-600 hover:bg-red-700 cursor-pointer">Approve</div>
                                 </div>)

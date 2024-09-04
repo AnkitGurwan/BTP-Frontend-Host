@@ -231,11 +231,10 @@ const SpecificProjectProjectcard = () =>{
                   ?
                   <button 
                     id="myBtn" 
-                    className='disabled py-1 cursor-not-allowed mx-auto flex justify-center items-center no-underline w-32 rounded-md text-white div-1 font-semibold mt-2 hover:bg-red-700 text-sm md:text-lg' 
+                    className='disabled py-1 cursor-not-allowed mx-auto flex justify-center items-center no-underline w-32 rounded-md text-white div-1 font-semibold mt-2 bg-red-600 text-sm md:text-lg' 
                     disabled 
-                    style={{'backgroundColor':'#EC2D01'}}
                   >
-                    De-Register
+                    Applied
                   </button>
                   :
                   <button 
