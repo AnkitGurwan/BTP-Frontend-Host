@@ -49,6 +49,7 @@ const ProfState = (props) => {
     const createProf = async (email, name) => {
         const response = await fetch(`${url}/user/createprof`, {
             method: 'POST',
+            credentials:'include',
             headers: {
                 'Content-Type': "application/json"
             },
