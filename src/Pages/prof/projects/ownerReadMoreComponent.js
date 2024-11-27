@@ -13,6 +13,7 @@ const Specificprojectcard=()=> {
     const { getProfDetailsFromMicrosoft, checkProfEligible } = useContext(ProfContext);
 
     const items = useSelector(state => state.allProjects.specificProjects);
+    console.log("ankit", items);
     
     const params=useParams();
     const id = params.id;

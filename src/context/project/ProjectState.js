@@ -79,6 +79,7 @@ const ItemState=(props)=>{
         })
 
         const json = await response.json();  
+        console.log("new", json);
 
         dispatch(setSpecificProjects(json));
         return response.status;

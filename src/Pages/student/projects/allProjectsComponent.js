@@ -24,12 +24,13 @@ const AllProjectsComponent = () => {
 
     //react states
     const [mobileMenu, setMobileMenu] = useState(false);
+    const [loadingCheckAlloted, setLoadingCheckAlloted] = useState(true);
     const [allowed, setAllowed] = useState(items.length > 0 ? true : false);
     const [loading, setLoading] = useState(items.length > 0 ? false : true);
     const [registered, setRegistered] = useState(false);
     const [projectId,setProjectId] = useState('');
     const [partner, setPartner] = useState('');
-    const [flag, setFlag] = useState(false);
+    const [havePartner, setFlag] = useState(false);
     const [random, setRandom] = useState(false);
 
     const [allotedProjects, setAllotedProjects] = useState([]);
@@ -106,6 +107,8 @@ const AllProjectsComponent = () => {
             {
                 await LogOut();
             }
+
+            setLoadingCheckAlloted(false);
         }
     }
 
@@ -132,16 +135,16 @@ const AllProjectsComponent = () => {
                 return student._id;
             });
 
-            var flag = false;
+            var havePartner = false;
 
             const partner = students
                 .filter((student) => student.partner === studId[0])
                 .map((student, i) => {
-                    flag = true;
+                    havePartner = true;
                     return student;
                 });
 
-            setFlag(flag);
+            setFlag(havePartner);
             setPartner(partner);
         }
     }
@@ -216,7 +219,14 @@ const AllProjectsComponent = () => {
                                     </div>
                                 </div>
                                 <div className="flex items-center">
-                                {!registered 
+                                {
+                                loadingCheckAlloted
+                                ?
+                                <div class="flex items-center justify-center h-screen pr-6">
+                                    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white pr-4"></div>
+                                </div>
+                                :
+                                !registered 
                                 ?
                                 <div
                                     className='text-xs md:text-lg py-1 px-1 md:px-2 bg-red-600 font-medium text-center text-white rounded-md mr-4'
@@ -253,7 +263,8 @@ const AllProjectsComponent = () => {
                                         ></i>
                                         My Project
                                     </Link>}
-                                    {flag
+                                    {
+                                    havePartner
                                     ?
                                     <a
                                         href='#partner'
@@ -307,12 +318,23 @@ const AllProjectsComponent = () => {
                                 {mobileMenu
                                 ?
                                 <div className='flex flex-col md:hidden mt-12 z-10 border bg-white px-4 top-4 rounded-sm fixed right-8 cursor-pointer '>
-                                    <a
-                                        href={`/student/projects/${projectId}`}
+                                    {!registered
+                                    ?
+                                    <div
+                                        className='text-gray-300 no-underline hover:text-gray-700 py-2 border-b'
+                                    >
+                                        My Project
+                                    </div>
+                                    :
+                                    <Link
+                                        to={`/btp/student/projects/${projectId}`}
                                         className='text-gray-600 no-underline hover:text-gray-700 py-2 border-b'
                                     >
                                         My Project
-                                    </a>
+                                    </Link>}
+                                    {
+                                    havePartner
+                                    ?
                                     <a
                                         href='#partner'
                                         className='text-gray-600 hover:text-gray-700 py-2 border-b no-underline'
@@ -320,6 +342,14 @@ const AllProjectsComponent = () => {
                                     >
                                         My Partner
                                     </a>
+                                    :
+                                    <Link
+                                        to={`/btp/student/partner`}
+                                        className='text-gray-600 hover:text-gray-700 py-2 border-b no-underline'
+                                        onClick={() => setMobileMenu(false)}
+                                    >
+                                        My Partner
+                                    </Link>}
                                     <a
                                         href='#course'
                                         className='text-gray-600 no-underline hover:text-gray-700 py-2 border-b'
@@ -391,7 +421,7 @@ const AllProjectsComponent = () => {
                     <hr/>
         
                     <div className='w-full flex justify-start py-4 px-4 md:px-6 text-white text-xl'>
-                        <div className='px-4 py-2 rounded-md w-fit bg-green-600 bg-opacity-80'>Not Alloted till now ({unAllotedProjects.length})</div>
+                        <div className='px-4 py-2 rounded-md w-fit bg-green-600 bg-opacity-80'>Available Projects ({unAllotedProjects.length})</div>
                     </div>
                     <div className='grid grid-cols-2 gap-2 md:gap-4 pt-4 pb-2 px-2 md:px-6 md:grid-cols-3 lg:grid-cols-5'>
                         {unAllotedProjects
@@ -405,11 +435,11 @@ const AllProjectsComponent = () => {
                         })}
                     </div>
 
-                    <hr/>
+                    {/* <hr/> */}
 
-                    <div className='w-full flex justify-start py-4 px-2 md:px-6 text-white text-xl'>
+                    {/* <div className='w-full flex justify-start py-4 px-2 md:px-6 text-white text-xl'>
                         <div className='px-4 py-2 rounded-md w-fit bg-red-600 bg-opacity-80'>Alloted Projects ({allotedProjects.length})</div>
-                    </div>
+                    </div> */}
                     <div className='grid grid-cols-2 gap-2 md:gap-4 pt-4 pb-2 px-2 md:px-6 md:grid-cols-3 lg:grid-cols-5'>
                         {allotedProjects
                         .filter((items) => {
@@ -433,7 +463,7 @@ const AllProjectsComponent = () => {
                             <div>
                                 <label className="text-sm md:text-lg font-medium text-gray-700">Name:</label>
                                 <p className="text-sm md:text-lg  font-semibold font-mono tracking-tighter md:tracking-tight">
-                                {flag ? partner[0].name : "N/A"}
+                                {havePartner ? partner[0].name : "N/A"}
                                 </p>
                             </div>
                             <div>
@@ -441,13 +471,13 @@ const AllProjectsComponent = () => {
                                 Roll No:
                                 </label>
                                 <p className="text-sm md:text-lg font-semibold font-mono pl-5 md:pl-12">
-                                {flag ? partner[0].rollNum : "N/A"}
+                                {havePartner ? partner[0].rollNum : "N/A"}
                                 </p>
                             </div>
                             <div>
                                 <label className="text-sm md:text-lg font-medium text-gray-700 ">Email:</label>
                                 <p className="text-sm md:text-lg font-semibold font-mono tracking-tighter md:tracking-tight">
-                                {flag ? partner[0].email : "N/A"}
+                                {havePartner ? partner[0].email : "N/A"}
                                 </p>
                             </div>
                             <div>

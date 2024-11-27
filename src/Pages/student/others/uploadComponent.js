@@ -32,6 +32,7 @@ const UploadComponent = () => {
         if(studentInfo && studentInfo.studInfo)
         {
             const x = await checkDocumentUploaded(studentInfo.studInfo.mail);
+            // alert(x);
             if(x === 200)
             {
                 setCheckGrade(true);
@@ -55,6 +56,14 @@ const UploadComponent = () => {
             {
                 setCheckGrade(false);
                 setCheckResume(true);
+            }
+            else if(x === 203)
+            {
+                setCheckGrade(false);
+                setCheckResume(false);
+
+                setLoading1(false);
+                setLoading2(false);
             }
             else if ( x === 408)
             {
@@ -198,7 +207,7 @@ const UploadComponent = () => {
                     <div className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">
-                                Upload Grade Cardd
+                                Upload Grade Card
                             </label>
                             <div className='flex gap-2 pt-2 items-center'>
                                 {checkGrade
